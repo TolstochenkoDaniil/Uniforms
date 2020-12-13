@@ -1,12 +1,18 @@
+# 
 .DS_Store
 node_modules
+
+
+# py
 /dist
 env
 __pycache__
-*.sqlite3
 misc
 migrations
-
+*.pickle
+*.json
+*.sqlite3
+settings.py
 
 # local env files
 .env.local
