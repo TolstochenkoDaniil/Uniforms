@@ -7,6 +7,9 @@ from google_auth_oauthlib.flow import InstalledAppFlow
 from google.auth.transport.requests import Request
 
 
+creds_dir = os.path.join(os.path.dirname(__file__), 'creds')
+
+
 def handle_http_errors(function):
     def wrapper(self, *args, **kwargs):
         try:
@@ -24,7 +27,7 @@ class AppsScriptService:
         self.error = None
         self.trace = None
     
-    @handle_http_errors   
+    # @handle_http_errors   
     def execute_script(self, request: dict, script_id: str):
         response = self.service.scripts().run(
             body=request,
@@ -41,8 +44,8 @@ class AppsScriptService:
             if 'scriptStackTraceElements' in error:
                 for trace in error['scriptStackTraceElements']:
                     self.trace = "\t{0}: {1}".format(trace['function'],trace['lineNumber'])
-        else:
-            self._response = response
+        
+        self._response = response
             
     @property
     def response(self):
@@ -66,17 +69,25 @@ class ServiceProvider:
         service =  build(
             'script',
             self.version,
-            credentials=self._credentials
+            credentials=self.credentials
         )
         
         return AppsScriptService(service=service)
+    
+    @property
+    def credentials(self):
+        self._set_credentials()
+        
+        return self._credentials
         
     def _set_credentials(self):
         self._load_token()
     
     def _load_token(self):
-        if os.path.exists('token.pickle'):
-            with open('token.pickle','rb') as token:
+        token_file = os.path.join(creds_dir,'token.pickle')
+        
+        if os.path.exists(token_file):
+            with open(token_file,'rb') as token:
                 self._credentials = pickle.load(token)
         
         self._validate_credentials()
@@ -92,11 +103,11 @@ class ServiceProvider:
     
     @classmethod
     def _get_credentials_from_local_flow(cls, port):
-        flow = InstalledAppFlow.from_client_secrets_file('credentials.json', cls.SCOPES)
+        flow = InstalledAppFlow.from_client_secrets_file(os.path.join(creds_dir,'credentials.json'), cls.SCOPES)
         credentials = flow.run_local_server(port=port)
         
         return credentials
 
     def _dump_credentials(self):
-        with open('token.pickle', 'wb') as token:
-            pickle.dump(self.credentials, token)
+        with open(os.path.join(creds_dir,'token.pickle'), 'wb') as token:
+            pickle.dump(self._credentials, token)
