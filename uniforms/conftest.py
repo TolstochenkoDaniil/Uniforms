@@ -18,6 +18,7 @@ def anon():
 def mixer():
     return _mixer
 
+
 @pytest.fixture
 def user(mixer):
     return mixer.blend('social_auth.UniformsUser')

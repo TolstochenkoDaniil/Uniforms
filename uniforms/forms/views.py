@@ -1,7 +1,7 @@
 from rest_framework import viewsets
-from rest_framework_simplejwt.authentication import JWTAuthentication
 from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticated
+from rest_framework.authentication import TokenAuthentication
 
 from .models import Form
 from .serializers import FormSerializer, FormListSerializer
@@ -9,7 +9,7 @@ from .serializers import FormSerializer, FormListSerializer
 class FormViewSet(viewsets.ModelViewSet):
     queryset = Form.objects.all()
     serializer_class = FormSerializer
-    # authentication_classes = [JWTAuthentication]
+    authentication_classes = [TokenAuthentication]
     permission_classes = [IsAuthenticated]
     
     def retrieve(self, request, user_id=None):
@@ -29,6 +29,6 @@ class FormViewSet(viewsets.ModelViewSet):
         _, created = serializer.create(request.data, user_id=user_id)
         
         if created:
-            return Response({'status': 'created'})
+            return Response(data={'status': 'created'}, status=201)
         else:
-            return Response({'status': 'updated'})
+            return Response(data={'status': 'updated'}, status=201)

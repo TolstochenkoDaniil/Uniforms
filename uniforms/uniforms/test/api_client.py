@@ -32,7 +32,6 @@ class DRFClient(APIClient):
             user_opts = {
                 'is_stuff': False,
                 'is_superuser': True,
-                'email': 'test@mail.com'
             }
         user = mixer.blend('social_auth.UniformsUser', **user_opts)
         self.password = ''.join([random.choice(string.hexdigits) for _ in range(0, 6)])

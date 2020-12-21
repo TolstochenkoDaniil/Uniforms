@@ -82,3 +82,9 @@ class Form(models.Model):
             models.Index(fields=['creation_date'], name='creation_date_idx'),
         ]
         ordering = ['status', 'creation_date']
+        
+    def __str__(self):
+        return f'Форма "{self.name} пользователя {self.user} доступна по ссылке {self.url}"'
+    
+    def change_status(self, status):
+        self.status = status
