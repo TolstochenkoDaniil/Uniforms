@@ -7,11 +7,13 @@ node_modules
 /dist
 env
 __pycache__
+.pytest_cache
 misc
 migrations
 *.pickle
 *.json
 *.sqlite3
+*.log
 settings.py
 
 # local env files
