@@ -3,13 +3,13 @@ from django.conf import settings
 import uuid
 
 
+class FormStatus(models.IntegerChoices):
+    COMMON = 0
+    PREMIUM = 1
+    BANNED = -1
+
+
 class Form(models.Model):
-    
-    class FORM_STATUS(models.IntegerChoices):
-        COMMON = 0
-        PREMIUM = 1
-        BANNED = -1
-    
     id = models.UUIDField(
         primary_key=True,
         default=uuid.uuid4,
@@ -36,6 +36,15 @@ class Form(models.Model):
         },
         verbose_name='URL from google forms'
     )
+    edit_url = models.URLField(
+        null=True,
+        blank=False,
+        editable=True,
+        error_messages={
+            'blank':'Edit URL could\'not be empty'
+        },
+        verbose_name='URL for editing google forms'
+    )
     university = models.CharField(
         null=True,
         blank=True,
@@ -53,7 +62,7 @@ class Form(models.Model):
         settings.AUTH_USER_MODEL,
         on_delete=models.CASCADE,
         related_name='user',
-        verbose_name='Form\'s owner id'        
+        verbose_name='Form\'s owner id'
     )
     creation_date = models.DateTimeField(
         null=True,
@@ -70,21 +79,27 @@ class Form(models.Model):
         verbose_name='Time when form was last modified'
     )
     status = models.IntegerField(
-        choices=FORM_STATUS.choices,
-        default=FORM_STATUS.COMMON,
+        choices=FormStatus.choices,
+        default=FormStatus.COMMON,
         editable=True,
         verbose_name='Form status'
     )
-    
+    is_valid = models.BooleanField(
+        default=False,
+        auto_created=True,
+        editable=True,
+        verbose_name='Does the form have edit permissions'
+    )
+
     class Meta:
         db_table = 'forms'
         indexes = [
             models.Index(fields=['creation_date'], name='creation_date_idx'),
         ]
         ordering = ['status', 'creation_date']
-        
+
     def __str__(self):
-        return f'Форма "{self.name} пользователя {self.user} доступна по ссылке {self.url}"'
-    
+        return f'Form "{self.name}"'
+
     def change_status(self, status):
         self.status = status

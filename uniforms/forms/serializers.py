@@ -10,15 +10,18 @@ class FormListSerializer(serializers.ModelSerializer):
 
 
 class FormParametersSerializer(serializers.Serializer):
+    id = serializers.UUIDField()
     name = serializers.CharField()
     url = serializers.URLField()
+    edit_url = serializers.URLField()
     university = serializers.CharField()
     discipline = serializers.CharField()
+    is_valid = serializers.BooleanField()
 
 
 class FormSerializer(serializers.HyperlinkedModelSerializer):
     form_params = FormParametersSerializer(source='*')
-    
+
     def create(self, validated_data, user_id=None):
         params = validated_data.get('form_params')
 
@@ -26,9 +29,9 @@ class FormSerializer(serializers.HyperlinkedModelSerializer):
             user_id=user_id.replace('-',''),
             defaults=params
         )
-        
+
         return form, created
 
     class Meta:
         model = Form
-        fields = ['id', 'form_params']
+        fields = ['form_params']
