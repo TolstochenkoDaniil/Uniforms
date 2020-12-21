@@ -19,11 +19,14 @@ class UniformsUser(AbstractUser):
         editable=True,
         verbose_name='User access status'
     )
-    
+
     def __str__(self):
         return self.email
-    
+
     class Meta:
         verbose_name = 'user_table'
         verbose_name_plural = 'users_table'
-        
+
+    @property
+    def get_id(self):
+        return str(self.id).replace('-', '')
