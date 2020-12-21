@@ -1,6 +1,6 @@
 import pytest
 
-from forms.models import Form
+from forms.models import FormStatus
 
 
 pytestmark = [pytest.mark.django_db]
@@ -16,10 +16,14 @@ def test_create_form(form):
     assert 'Test' in str(form)
 
 
+def test_status_after_create(form):
+    assert form.is_valid == False
+
+
 @pytest.mark.parametrize('status', [
-    Form.FORM_STATUS.COMMON,
-    Form.FORM_STATUS.PREMIUM,
-    Form.FORM_STATUS.BANNED,
+    FormStatus.COMMON,
+    FormStatus.PREMIUM,
+    FormStatus.BANNED,
 ])
 def test_form_change_status(form, status):
     form.change_status(status)
