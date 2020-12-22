@@ -14,7 +14,7 @@ migrations
 *.json
 *.sqlite3
 *.log
-settings.py
+.env
 
 # local env files
 .env.local

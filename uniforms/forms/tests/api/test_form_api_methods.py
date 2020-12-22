@@ -1,8 +1,7 @@
 import pytest
-import time
 
 from forms.models import Form
-from forms.tasks import check_form_edit_permission
+
 
 pytestmark = [pytest.mark.django_db]
 
@@ -58,18 +57,3 @@ def test_retrieve_form_endpoint(api, user, form):
     assert resp.get('form_params').get('edit_url') == form.edit_url
     assert resp.get('form_params').get('discipline') == form.discipline
     assert resp.get('form_params').get('is_valid') == form.is_valid
-
-
-def test_check_permission_task(api, user):
-    resp = api.get(f'/api/v1/{user.get_id}/form')
-
-    id = resp.get('form_params').get('id')
-    url = resp.get('form_params').get('edit_url')
-
-    check_form_edit_permission.delay(form_id=id, edit_url=url)
-
-    time.sleep(10)
-
-    resp = api.get(f'/api/v1/{user.get_id}/form')
-
-    assert resp.get('form_params').get('is_valid') == True

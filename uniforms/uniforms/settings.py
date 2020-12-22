@@ -131,6 +131,7 @@ DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
         'NAME': BASE_DIR / 'db.sqlite3',
+        'ATOMIC_REQUESTS': True,
     }
 }
 
@@ -153,7 +154,8 @@ SOCIALACCOUNT_PROVIDERS = {
 }
 
 # CELERY
-BROKER_URL = env('CELERY_BACKEND')
+CELERY_BROKER_URL = env('CELERY_BACKEND')
+CELERY_RESULT_BACKEND = env('CELERY_BACKEND')
 CELERY_ALWAYS_EAGER = env('CELERY_ALWAYS_EAGER', cast=bool, default=True)
 CELERY_TIMEZONE = TIME_ZONE
 CELERY_ENABLE_UTC = False
