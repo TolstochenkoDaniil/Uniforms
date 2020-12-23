@@ -2,12 +2,20 @@ import pytest
 
 from forms.models import Form
 
+
 pytestmark = [pytest.mark.django_db]
 
 
 @pytest.fixture
 def form(mixer, user):
-    return mixer.blend('forms.Form', name='Test', url='goo.text.com', discipline='CS', user_id=str(user.id))
+    return mixer.blend(
+        'forms.Form',
+        name='Test',
+        url='goo.text.com',
+        edit_url='https://docs.google.com/forms/d/1fRRrgd6y4m_VPHb-cB-f4GeCmSW6Uwz5tTry5qUN_iM/edit',
+        discipline='CS',
+        user_id=str(user.id)
+    )
 
 
 @pytest.fixture
@@ -15,6 +23,7 @@ def form_params(form):
     params = dict(
         name=form.name,
         url=form.url,
+        edit_url=form.edit_url,
         university=form.university,
         discipline=form.discipline
     )
@@ -44,3 +53,7 @@ def test_retrieve_form_endpoint(api, user, form):
     resp = api.get(f'/api/v1/{user.get_id}/form')
 
     assert resp.get('form_params').get('name') == form.name
+    assert resp.get('form_params').get('url') == form.url
+    assert resp.get('form_params').get('edit_url') == form.edit_url
+    assert resp.get('form_params').get('discipline') == form.discipline
+    assert resp.get('form_params').get('is_valid') == form.is_valid

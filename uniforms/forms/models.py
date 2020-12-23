@@ -2,6 +2,8 @@ from django.db import models
 from django.conf import settings
 import uuid
 
+from forms.tasks import check_form_edit_permission
+
 
 class FormStatus(models.IntegerChoices):
     COMMON = 0
@@ -103,3 +105,8 @@ class Form(models.Model):
 
     def change_status(self, status):
         self.status = status
+        self.save()
+        
+    def check_edit_permission(self):
+        if self.status != FormStatus.BANNED:
+            check_form_edit_permission.delay(self.id, self.edit_url)

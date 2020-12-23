@@ -4,6 +4,9 @@ from uniforms.test.api_client import DRFClient
 from mixer.backend.django import mixer as _mixer
 
 
+pytest_plugins = ("celery.contrib.pytest", )
+
+
 @pytest.fixture
 def api():
     return DRFClient()
