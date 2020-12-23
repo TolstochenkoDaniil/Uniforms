@@ -44,6 +44,7 @@ export default {
         const form = {
             name: "",
             url: "",
+            edit_url: "",
             university: "",
             discipline: ""
         };
