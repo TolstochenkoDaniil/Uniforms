@@ -65,3 +65,9 @@ def test_check_permission_task(api, user, form, celery_worker):
     resp = api.get(f'/api/v1/{user.get_id}/form')
 
     assert resp.get('form_params').get('is_valid') == True
+
+
+@patch('forms.tasks.check_form_edit_permission.delay')
+def test_check_edit_permission_from_form(mock_run, form, celery_worker):
+    form.check_edit_permission()
+    check_form_edit_permission.delay.assert_called_once_with(form.id, form.edit_url)

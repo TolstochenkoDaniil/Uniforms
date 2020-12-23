@@ -16,5 +16,5 @@ def check_form_edit_permission(form_id, edit_url):
         form = apps.get_model('forms.Form').objects.filter(pk=form_id).get()
         form.is_valid = True
         form.save()
-    
+
     return response.get('response')
