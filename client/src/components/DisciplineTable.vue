@@ -32,7 +32,7 @@ export default {
         };
         
         const store = useStore();
-        const disciplines = computed(() => store.state.Discipline.disciplines);
+        const disciplines = computed(() => store.state.discipline.disciplines);
         const disciplineList = createCopy(disciplines.value);
         
         onBeforeMount(() => {

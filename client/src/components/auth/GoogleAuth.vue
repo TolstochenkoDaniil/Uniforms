@@ -34,7 +34,8 @@ export default {
         const googleSignIn = () => {
             $gAuth.signIn()
             .then(resp => {
-                const token = resp.wc.access_token;
+                console.log(`Response: ${JSON.stringify(resp)}`)
+                const token = resp.uc.access_token;
                 store.dispatch('auth/AUTH_REQUEST', { 
                     accessToken: token,
                     provider:'google' 

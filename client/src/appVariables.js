@@ -1,8 +1,8 @@
-export const axiosDefaultsBaseURL = 
+export const axiosDefaultBaseURL = 
     process.env.NODE_ENV === "prodiction"
         ? "https://uniforms.edu"
-        : "http://127.0.0.1:8000";
-export const axios_defaults_baseFrontURL =
+        : "http://localhost:8000";
+export const axiosDefaultBaseFrontURL =
     process.env.NODE_ENV === "production"
         ? "https://uniforms.edu"
         : "http://localhost:8081";

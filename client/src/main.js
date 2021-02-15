@@ -10,17 +10,12 @@ import router from './router';
 import store from './store';
 
 import axios from 'axios';
-import { axiosDefaultsBaseURL, oauthGoogle } from './appVariables';
+import { axiosDefaultBaseURL, oauthGoogle } from './appVariables';
 import gAuth from 'vue3-google-auth';
 
 window.$ = window.jQuery = jQuery;
 
-axios.defaults.baseURL = axiosDefaultsBaseURL;
-
-const token = localStorage.getItem('user-token')
-if (token) {
-    axios.defaults.headers.common['Authorization'] = token;
-}
+axios.defaults.baseURL = axiosDefaultBaseURL;
 
 const $gAuth = gAuth.createGAuth({
     clientId: oauthGoogle,

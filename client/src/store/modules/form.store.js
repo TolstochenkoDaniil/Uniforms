@@ -2,20 +2,29 @@ import axios from 'axios';
 import { axiosDefaultBaseURL } from '../../appVariables';
 
 const state = {
-    form_params: {},
+    form: {
+        name: '',
+        url: '',
+        edit_url: '',
+        university: '',
+        discipline: ''
+    },
     status:''
-}
+};
 
 const getters = {
-    form_params: state => state.form_params,
+    userForm: state => state.form,
     status: state => state.status
-}
+};
 
 const actions = {
-    GET_USER_FORM({ commit, dispatch }, { userId }) {
+    async GET_USER_FORM({ commit, dispatch }, { userId }) {
         return new Promise((resolve, reject) => {
             commit('GET_USER_FORM');
-            axios.get(`${axiosDefaultBaseURL}/api/v1/${userId}/form`)
+            axios.get(
+                `${axiosDefaultBaseURL}/api/v1/${userId}/form`,
+                { headers: { Authorization: `Bearer ${localStorage.getItem('user-token')}` }}
+            )
             .then(resp => {
                 const formParams = resp.data.form_params;
                 commit('GET_USER_FORM_SUCCESS');
@@ -29,12 +38,14 @@ const actions = {
             })
         })
     },
-    SAVE_USER_FORM({ commit }, { userId, formParams }) {
+    async SAVE_USER_FORM({ commit }, { userId, formParams }) {
         return new Promise((resolve, reject) => {
             commit('SAVE_USER_FORM');
-            axios.post(`${axiosDefaultBaseURL}/api/v1/${userId}/form`, {
-                form_params: formParams
-            })
+            axios.post(
+                `${axiosDefaultBaseURL}/api/v1/${userId}/form`,
+                { form_params: formParams },
+                { headers: { Authorization: `Bearer ${localStorage.getItem('user-token')}` }}
+            )
             .then(resp => {
                 const status = resp.data.status;
                 commit('SAVE_USER_FORM_SUCCESS', status);
@@ -47,10 +58,10 @@ const actions = {
             })
         })
     },
-    SET_FORM_PARAMS({ commit }, { formParams }) {
+    SET_FORM_PARAMS({ commit }, formParams) {
         commit('SET_FORM_PARAMS', formParams);
     }
-}
+};
 
 const mutations = {
     GET_USER_FORM(state) {
@@ -72,9 +83,9 @@ const mutations = {
         state.status = 'failed';
     },
     SET_FORM_PARAMS(state, formParams) {
-        state.form_params = formParams;
+        state.form = formParams;
     }
-}
+};
 
 export default {
     namespaced: true,
@@ -82,4 +93,4 @@ export default {
     getters,
     actions,
     mutations
-}
+};

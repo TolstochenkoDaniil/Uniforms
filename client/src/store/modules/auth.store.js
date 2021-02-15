@@ -1,28 +1,29 @@
 import axios from 'axios';
 import router from '../../router/index';
-import { axiosDefaultsBaseURL } from '../../appVariables';
+import { axiosDefaultBaseURL } from '../../appVariables';
 
 const state = {
     token: localStorage.getItem('user-token') || '',
     refreshToken: localStorage.getItem('user-refresh-token') || '',
     status: '',
-    user: JSON.parse(localStorage.getItem('user')) || {}
-}
+    user: localStorage.getItem('user') || {}
+};
 
 const getters = {
     isAuthenticated: state => !!state.token,
     authStatus: state => state.status,
     user: state => state.user
-}
+};
 
 const actions = {
     AUTH_REQUEST({ commit, dispatch }, { accessToken, provider }) {
         return new Promise((resolve, reject) => {
             commit('AUTH_REQUEST');
-            axios.post(`${axiosDefaultsBaseURL}/auth/${provider}`, {
+            axios.post(`${axiosDefaultBaseURL}/auth/${provider}`, {
                 access_token: accessToken
             })
             .then(resp => {
+                console.log(`Data from backend: ${JSON.stringify(resp.data)}`);
                 const token = resp.data.access_token;
                 localStorage.setItem('user-token', token);
                 commit('AUTH_SUCCESS', token);
@@ -48,7 +49,7 @@ const actions = {
     USER_REQUEST({ commit }, user) {
         commit('USER_REQUEST', user);
     }
-}
+};
 
 const mutations = {
     AUTH_REQUEST(state) {
@@ -72,7 +73,7 @@ const mutations = {
         localStorage.setItem('user', JSON.stringify(user));
         router.push('/');
     }
-}
+};
 
 export default {
     namespaced: true,
@@ -80,4 +81,4 @@ export default {
     getters,
     actions,
     mutations
-}
+};
