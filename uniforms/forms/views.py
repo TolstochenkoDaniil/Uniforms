@@ -1,33 +1,37 @@
 from rest_framework import viewsets
 from rest_framework.response import Response
-from rest_framework.permissions import IsAuthenticated
+from rest_framework.permissions import IsAuthenticated, IsAuthenticatedOrReadOnly
+from rest_framework.decorators import permission_classes
 from rest_framework_simplejwt.authentication import JWTAuthentication
 
 from .models import Form
 from .serializers import FormSerializer, FormListSerializer
+from .mixin import PermissionMixin
 
-class FormViewSet(viewsets.ModelViewSet):
+class FormViewSet(PermissionMixin, viewsets.ModelViewSet):
     queryset = Form.objects.all()
     serializer_class = FormSerializer
     authentication_classes = [JWTAuthentication]
     permission_classes = [IsAuthenticated]
-    
+    permissions_by_action = {'list': (IsAuthenticatedOrReadOnly,)}
+
     def retrieve(self, request, user_id=None):
         form = Form.objects.filter(user_id__exact=user_id)
         serializer = self.get_serializer(form.first())
-        
+
         return Response(serializer.data)
 
     def list(self, request, discipline=None):
         form = Form.objects.filter(discipline=discipline)
-        serializer = FormListSerializer(form, many=True)
-        
-        return Response(serializer.data)
-    
+        page = self.paginate_queryset(form)
+        serializer = FormListSerializer(page, many=True)
+
+        return self.get_paginated_response(serializer.data)
+
     def create(self, request, user_id=None):
         serializer = self.get_serializer()
         _, created = serializer.create(request.data, user_id=user_id)
-        
+
         if created:
             return Response(data={'status': 'created'}, status=201)
         else:

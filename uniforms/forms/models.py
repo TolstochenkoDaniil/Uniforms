@@ -43,14 +43,17 @@ class Form(models.Model):
         blank=False,
         editable=True,
         error_messages={
-            'blank':'Edit URL could\'not be empty'
+            'blank':'Edit URL could not be empty'
         },
         verbose_name='URL for editing google forms'
     )
     university = models.CharField(
         null=True,
-        blank=True,
+        blank=False,
         max_length=40,
+        error_messages={
+            'blank':'University could not be empty'
+        },
         verbose_name='User\'s university'
     )
     discipline = models.CharField(
@@ -58,6 +61,9 @@ class Form(models.Model):
         blank=False,
         editable=True,
         max_length=40,
+        error_messages={
+            'blank':'Discipline could not be empty'
+        },
         verbose_name='Discipline name that form refers to'
     )
     user = models.OneToOneField(
