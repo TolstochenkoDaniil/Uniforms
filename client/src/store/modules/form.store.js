@@ -58,7 +58,7 @@ const actions = {
             })
         })
     },
-    SET_FORM_PARAMS({ commit }, formParams) {
+    async SET_FORM_PARAMS({ commit }, formParams) {
         commit('SET_FORM_PARAMS', formParams);
     }
 };

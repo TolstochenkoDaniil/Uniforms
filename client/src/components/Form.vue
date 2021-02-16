@@ -1,17 +1,12 @@
 <template>
-    <router-link :to="{ name: 'form', params: {form_id: form.id}}" class="form">
+    <!-- <router-link :to="{ name: 'form', params: {form_id: form.id}}" class="form"> -->
         <div class="form-card">
             <h3 class="form-name">{{ form.name }}</h3>
-            <p class=form-description>
-                {{ form.description }}
-            </p>
             <ul class=form-credentials>
-                <li>{{ form.university }}</li>
-                <li>{{ form.user }}</li>
-                <li>{{ form.date }}</li>
+                <li><a v-bind:href="form.url">Начать опрос</a></li>
             </ul>
         </div>
-    </router-link>
+    <!-- </router-link> -->
 </template>
 
 <script>
@@ -21,10 +16,7 @@ export default {
         form: {
             id: Number,
             name: String,
-            description: String,
-            university: String,
-            user: String,
-            date: Date
+            url: String
         }
     }
 }
@@ -34,7 +26,6 @@ export default {
 div.form-card
 {
     margin: 10px;
-    
     text-align: left;
     padding: 10px;
     width: 400px;

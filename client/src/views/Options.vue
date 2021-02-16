@@ -1,5 +1,4 @@
 <template>
-
     <div class="options-page">
         <ul class="form-option">
             <li class="form-option-name">
@@ -26,7 +25,7 @@
                     <option disabled value="">
                         Выберите направление
                     </option>
-                    <option v-for="(discipline, index) in disciplines" :key="index" :value="discipline.name">
+                    <option v-for="(discipline, index) in disciplines" :key="index" :value="discipline.route">
                         {{ discipline.name }}
                     </option>
                 </select>
@@ -36,7 +35,6 @@
             Coxpaнить
         </button>
     </div>
-
 </template>
 
 <script>

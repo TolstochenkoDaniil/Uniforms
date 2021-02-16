@@ -4,7 +4,7 @@
             <p>{{ block.name }}</p>
         </div>
     </router-link>
-</template>>
+</template>
 
 <script>
 export default {

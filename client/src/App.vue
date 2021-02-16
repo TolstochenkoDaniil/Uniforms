@@ -1,10 +1,10 @@
 <template>
-  <suspense>
-    <div id="app">
-      <Navbar name="Uniforms.edu"/>
-      <router-view/>
-    </div>
-  </suspense>
+    <suspense>
+        <div id="app">
+            <Navbar name="Uniforms.edu"/>
+            <router-view/>
+        </div>
+    </suspense>
 </template>
 
 <script>

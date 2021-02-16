@@ -23,10 +23,11 @@ const actions = {
                 access_token: accessToken
             })
             .then(resp => {
-                console.log(`Data from backend: ${JSON.stringify(resp.data)}`);
                 const token = resp.data.access_token;
                 localStorage.setItem('user-token', token);
-                commit('AUTH_SUCCESS', token);
+                const refreshToken = resp.data.refresh_token;
+                localStorage.setItem('user-refresh-token', refreshToken)
+                commit('AUTH_SUCCESS', { token, refreshToken });
                 dispatch('USER_REQUEST', resp.data.user);
                 resolve(resp);
             })
@@ -42,6 +43,7 @@ const actions = {
         return new Promise((resolve, reject) => {
             commit('AUTH_LOGOUT');
             localStorage.removeItem('user-token');
+            localStorage.removeItem('user-refresh-token');
             localStorage.removeItem('user');
             resolve();
         })
@@ -55,8 +57,9 @@ const mutations = {
     AUTH_REQUEST(state) {
         state.status = 'loading';
     },
-    AUTH_SUCCESS(state, token) {
+    AUTH_SUCCESS(state, { token, refreshToken }) {
         state.token = token;
+        state.refreshToken = refreshToken
         state.status = 'success';
     },
     AUTH_ERROR(state, err) {
@@ -65,6 +68,7 @@ const mutations = {
     AUTH_LOGOUT(state) {
         state.token = '';
         state.user = '';
+        state.refreshToken = ''
         state.status = 'logout';
         router.push('/');
     },
