@@ -3,7 +3,7 @@ import random
 import string
 
 from mixer.backend.django import mixer
-from rest_framework.authtoken.models import Token
+from rest_framework_simplejwt.tokens import RefreshToken
 from rest_framework.test import APIClient
 
 
@@ -19,9 +19,9 @@ class DRFClient(APIClient):
         self.user = user or self._create_user(god_mode)
         self.god_mode = god_mode
 
-        token = Token.objects.create(user=self.user)
+        token = RefreshToken.for_user(self.user)
         self.credentials(
-            HTTP_AUTHORIZATION=f'Token {token}',
+            HTTP_AUTHORIZATION=f'Bearer {token}',
             HTTP_X_GM_CLIENT='testing',
         )
 

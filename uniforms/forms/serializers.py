@@ -1,12 +1,6 @@
 from rest_framework import serializers
+
 from .models import Form
-
-
-class FormListSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Form
-        fields = ['name', 'url', 'creation_date']
-        read_only_fields = ['creation_date']
 
 
 class FormParametersSerializer(serializers.Serializer):
@@ -17,6 +11,13 @@ class FormParametersSerializer(serializers.Serializer):
     university = serializers.CharField()
     discipline = serializers.CharField()
     is_valid = serializers.BooleanField()
+
+
+class FormListSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Form
+        fields = ['name', 'id', 'url']
+        read_only_fields = ['creation_date']
 
 
 class FormSerializer(serializers.HyperlinkedModelSerializer):

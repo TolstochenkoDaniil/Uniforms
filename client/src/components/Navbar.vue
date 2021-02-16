@@ -10,8 +10,14 @@
         <div class="collapse navbar-collapse" id="navbarCollapse">
             <ul class="navbar-nav mr-auto">
                 <li class="nav-item active">
-                    <router-link :to="{ name: 'Login' }" class="nav-link">Вход 
-                    </router-link>
+                    <div v-if="!userAuthenticated">
+                        <router-link v-on:click.once="googleSignIn" :to="{ name: 'Home' }" class="nav-link">Вход 
+                        </router-link>
+                    </div>
+                    <div v-else>
+                        <router-link v-on:click.once="logout" :to="{ name: 'Home' }" class="nav-link">Выход
+                        </router-link>
+                    </div>
                 </li>
                 <li class="nav-item">
                     <router-link :to="{ name: 'Disciplines' }" class="nav-link">Направления
@@ -35,6 +41,7 @@
 <script>
 import { computed } from 'vue';
 import { useStore } from 'vuex';
+import gAuth from 'vue3-google-auth';
 
 export default {
     name: "Navbar",
@@ -42,16 +49,32 @@ export default {
         name: String
     },
     setup() {
+        const $gAuth = gAuth.useGAuth();
         const store = useStore();
-        const isAuthenticated = computed(() => store.getters['auth/isAthenticated']);
 
+        const userAuthenticated = computed(() => store.getters['auth/isAuthenticated'])
+
+        const googleSignIn = () => {
+            $gAuth.signIn()
+            .then(resp => {
+                const token = resp.uc.access_token;
+                store.dispatch('auth/AUTH_REQUEST', { 
+                    accessToken: token,
+                    provider:'google' 
+                });
+            })
+            .catch(err => {
+                console.log(`Auth error: ${err}`);
+            })
+        }
         const logout = () => {
             store.dispatch('auth/AUTH_LOGOUT');
         }
 
-        return {
-            isAuthenticated, 
-            logout
+        return { 
+            googleSignIn,
+            logout, 
+            userAuthenticated,
         }
     }
 }

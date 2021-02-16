@@ -17,11 +17,6 @@ const routes = [
     component: Home
   },
   {
-    path: '/login',
-    name: 'Login',
-    component: () => import('../views/Login.vue')
-  },
-  {
     path: '/disciplines',
     name: 'Disciplines',
     component: () => import('../views/Disciplines.vue')
@@ -31,12 +26,12 @@ const routes = [
     name: 'discipline',
     component: () => import('../views/DisciplineForms.vue')
   },
-  {
-    path: '/disciplines/:discipline/:form_id',
-    name: 'form',
-    component: () => import('../views/Form.vue'),
-    beforeEnter: isAuthenticated,
-  },
+  // {
+  //   path: '/disciplines/:discipline/:form_id',
+  //   name: 'form',
+  //   component: () => import('../views/Form.vue'),
+  //   beforeEnter: isAuthenticated,
+  // },
   {
     path: '/options',
     name: 'Options',

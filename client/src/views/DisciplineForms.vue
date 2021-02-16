@@ -6,7 +6,7 @@
 </template>
 
 <script>
-import { computed } from 'vue';
+import { computed, onMounted } from 'vue';
 import { useStore } from 'vuex';
 import { useRoute } from 'vue-router';
 
@@ -18,9 +18,16 @@ export default {
         FormList
     },
     setup() {
-        const { params: { disciplineName },} = useRoute();
+        const { params: { discipline, disciplineName }, } = useRoute();
         const store = useStore();
-        const forms = computed(() => store.state.Forms.forms);
+        const forms = computed(() => store.getters['forms/formList']);
+        const fetchForms = async () => {
+            await store.dispatch('forms/GET_FORMS', { discipline: discipline });
+        };
+
+        onMounted(async () => {
+            await fetchForms();
+        });
 
         return { disciplineName, forms }
     }

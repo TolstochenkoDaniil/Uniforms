@@ -7,10 +7,16 @@
             <li class="form-option-url">
                 <input type="text" v-model="form.url" placeholder="Ссылка на google forms">
             </li>
+            <li class="form-option-edit-url">
+                <input type="text" v-model="form.edit_url" placeholder="Ссылка для редактирования google forms">
+            </li>
             <li class="form-option-university">
                 <select v-model="form.university">
                     <option disabled value="">
                         Выберите свой университет
+                    </option>
+                    <option v-for="(university, index) in universityList" :key="index" :value="university">
+                        {{ university }}
                     </option>
                 </select>
             </li>
@@ -19,45 +25,52 @@
                     <option disabled value="">
                         Выберите направление
                     </option>
-                    <option v-for="(discipline, index) in disciplines" :key="index" :value="discipline.name">
+                    <option v-for="(discipline, index) in disciplines" :key="index" :value="discipline.route">
                         {{ discipline.name }}
-                    </option>   
+                    </option>
                 </select>
             </li>
         </ul>
-    <button v-on:click.once="registerForm(form)" class="submit-form-options">
-        Coxpaнить
-    </button>
+        <button v-on:click.once="saveForm(form)" class="submit-form-options">
+            Coxpaнить
+        </button>
     </div>
 </template>
 
 <script>
-import { computed } from 'vue';
+import { computed, onMounted } from 'vue';
 import { useStore } from 'vuex';
 
 export default {
     name: 'Options',
 
-    setup() {
+    async setup() {
         const store = useStore();
-        const disciplines = computed(() => store.state.Discipline.disciplines)
-        const form = {
-            name: "",
-            url: "",
-            university: "",
-            discipline: ""
-        };
 
-        function registerForm(form) {
-            console.log("Adding form "+JSON.stringify(form));
-            store.dispatch('Forms/addForm', form);
-            alert("Form was added!");
+        const user = computed(() => store.getters['auth/user']);
+        const form = computed(() => store.getters['form/userForm']);
+        const status = computed(() => store.getters['form/status']);
+        const disciplines = computed(() => store.state.discipline.disciplines);
+
+        async function saveForm(form) {
+            await store.dispatch('form/SAVE_USER_FORM', { userId: user.value.pk, formParams: form});
         }
 
-        return { 
+        const fetchForm = async () => {
+            await store.dispatch('form/GET_USER_FORM', { userId: user.value.pk })
+        }
+
+        onMounted(async () => {
+            if (user.value !== 'undefined')
+                await fetchForm();
+        });
+
+        return {
             disciplines,
             form,
-            registerForm 
+            status,
+            saveForm,
+            universityList: computed(() => store.getters['university/list'])
         }
     }
 }

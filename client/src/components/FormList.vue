@@ -1,6 +1,6 @@
 <template>
     <ul class="form-list">
-        <li v-for="(form, index) in forms" :key="index" :class="{['form-'+form.id]: true}">
+        <li v-for="(form, index) in forms" :key="index" :class="{['form-'+index]: true}">
             <Form :form="form"></Form>
         </li>
     </ul>
@@ -38,7 +38,6 @@ li[class^='form-']
 {
     margin: auto;
     padding: 2px;
-    
     height: auto;
     width: 420px;
 }
