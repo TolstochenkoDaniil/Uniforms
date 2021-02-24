@@ -1,0 +1,36 @@
+# 
+.DS_Store
+node_modules
+
+
+# py
+/dist
+env
+__pycache__
+.pytest_cache
+misc
+migrations
+*.pickle
+*.json
+*.sqlite3
+*.log
+.env
+
+# local env files
+.env.local
+.env.*.local
+
+# Log files
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# Editor directories and files
+.idea
+.vscode
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
