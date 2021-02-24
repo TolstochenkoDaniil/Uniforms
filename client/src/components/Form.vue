@@ -1,12 +1,10 @@
 <template>
-    <!-- <router-link :to="{ name: 'form', params: {form_id: form.id}}" class="form"> -->
-        <div class="form-card">
-            <h3 class="form-name">{{ form.name }}</h3>
-            <ul class=form-credentials>
-                <li><a v-bind:href="form.url">Начать опрос</a></li>
-            </ul>
+    <div class="card">
+        <h3 class="name">{{ form.name }}</h3>
+        <div class="body">
+            <a v-bind:href="form.url" class="btn btn-primary">Пройти опрос</a>
         </div>
-    <!-- </router-link> -->
+    </div>
 </template>
 
 <script>
@@ -23,39 +21,27 @@ export default {
 </script>
 
 <style>
-div.form-card
+div.card
 {
-    margin: 10px;
-    text-align: left;
-    padding: 10px;
-    width: 400px;
-    height: 250px;
-    background: #0c6aed;
-    border-radius: 30px;
-    box-sizing: border-box;
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
+    margin: 2em;
+    padding: 0.5em;
+    width: 35em;
+    height: auto;
 }
-h3.form-name
-{
-    margin: 5px;
+.card {
+  box-shadow: 0 0.3em 0.5em 0 rgba(0,0,0,0.2);
+  transition: 0.3s;
 }
-p.form-description
-{
-    margin-top: 20px;
-    margin: 10px;
+.card:hover {
+  box-shadow: 0 0.5em 0.8em 0 rgba(0,0,0,0.2);
 }
-ul.form-credentials
+h3.name
 {
-    margin: 5px;
-    text-decoration: none;
-    list-style-type: none;
+    margin: 0.7em;
 }
-a.form
+a.btn
 {
-    text-decoration: none;
-    color: whitesmoke;
+
 }
 </style>
 

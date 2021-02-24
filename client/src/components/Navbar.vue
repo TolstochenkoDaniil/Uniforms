@@ -9,31 +9,31 @@
         </button>
         <div class="collapse navbar-collapse" id="navbarCollapse">
             <ul class="navbar-nav mr-auto">
-                <li class="nav-item active">
-                    <div v-if="!userAuthenticated">
-                        <router-link v-on:click.once="googleSignIn" :to="{ name: 'Home' }" class="nav-link">Вход 
-                        </router-link>
-                    </div>
-                    <div v-else>
-                        <router-link v-on:click.once="logout" :to="{ name: 'Home' }" class="nav-link">Выход
-                        </router-link>
-                    </div>
-                </li>
                 <li class="nav-item">
-                    <router-link :to="{ name: 'Disciplines' }" class="nav-link">Направления
+                    <router-link :to="{ name: 'Disciplines' }" class="nav-link" >Направления
                     </router-link>
                 </li>
                 <li class="nav-item">
-                    <router-link :to="{ name: 'Options' }" class="nav-link">Настройки
+                    <router-link :to="{ name: 'Options' }" class="nav-link" >Настройки
                     </router-link>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link disabled" href="#" aria-disabled="true">Статистика</a>
+                    <a class="nav-link disabled" href="#" aria-disabled="true" >Статистика</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link disabled" href="#" aria-disabled="true">Правила</a>
+                    <a class="nav-link disabled" href="#" aria-disabled="true" >Правила</a>
                 </li>
             </ul>
+            <form class="form-inline">
+                <div v-if="!userAuthenticated">
+                    <router-link v-on:click.once="googleSignIn" :to="{ name: 'Home' }" class="btn btn-success">Вход 
+                    </router-link>
+                </div>
+                <div v-else>
+                    <router-link v-on:click.once="logout" :to="{ name: 'Home' }" class="btn btn-success">Выход
+                    </router-link>
+                </div>
+            </form>
         </div>
     </nav>
 </template>>
