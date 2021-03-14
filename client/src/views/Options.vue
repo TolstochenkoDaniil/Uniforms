@@ -31,7 +31,7 @@
                 </select>
             </li>
         </ul>
-        <button v-on:click.once="saveForm(form)" class="submit-form-options">
+        <button v-on:click="saveForm(form)" class="submit-form-options">
             Coxpaнить
         </button>
     </div>

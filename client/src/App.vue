@@ -2,9 +2,11 @@
     <suspense>
         <div id="app">
             <Navbar name="Uniforms.edu"/>
-            <transition name="fade" mode="out-in">
-              <router-view :key="$route.fullPath"></router-view>
-            </transition>
+              <router-view :key="$route.fullPath" v-slot="{ Component }">
+                <transition name="fade" mode="out-in">
+                  <component :is="Component" />
+                </transition>
+              </router-view>
         </div>
     </suspense>
 </template>

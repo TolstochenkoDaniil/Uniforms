@@ -1,5 +1,5 @@
 <template>
-    <div class="discipline-forms container justify-content-center ">
+    <div class="discipline-forms justify-content-center ">
         <div class="discipline-forms-header row">
             <div class="discipline-forms-header col-12">
                 <figure class="discipline-forms-header text-center">

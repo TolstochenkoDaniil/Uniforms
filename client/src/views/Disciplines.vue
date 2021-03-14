@@ -4,7 +4,7 @@
             <div class="col-mx-12">
                 <container>
                     <div v-for="(discipline, index) in disciplines" :key=index class="discipline-parent">
-                        <DisciplineBlock :block="discipline"></DisciplineBlock>
+                        <discipline-block :block="discipline"/>
                     </div>
                 </container>
             </div>

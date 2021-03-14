@@ -50,6 +50,36 @@ const actions = {
     },
     USER_REQUEST({ commit }, user) {
         commit('USER_REQUEST', user);
+    },
+    TOKEN_VERIFY({ commit, dispatch }) {
+        return new Promise((resolve, reject) => {
+            axios.post(`${axiosDefaultBaseURL}/auth/token/verify/`, {
+                token: localStorage.getItem('user-token')
+            })
+            .then(resp => {
+                resolve(resp);
+            })
+            .catch(err => {
+                console.log(`Error occured while verifying access token. ${err}`);
+                reject(err);
+            })
+        })
+    },
+    TOKEN_REFRESH({ commit, dispatch }) {
+        return new Promise((resolve, reject) => {
+            axios.post(`${axiosDefaultBaseURL}/auth/token/refresh/`, {
+                refresh: localStorage.getItem('user-refresh-token')
+            })
+            .then(resp => {
+                const token = resp.data.access;
+                localStorage.setItem('user-token', token);
+                resolve(resp);
+            })
+            .catch(err => {
+                console.log(`Error while refreshing token.\n${err}`);
+                reject(err);
+            })
+        })
     }
 };
 

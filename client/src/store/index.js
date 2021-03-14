@@ -6,13 +6,13 @@ import form from './modules/form.store';
 import auth from './modules/auth.store';
 
 const store = createStore({
-  modules: {
-    university,
-    disciplines,
-    forms,
-    form,
-    auth,
-  }
+     modules: {
+          university,
+          disciplines,
+          forms,
+          form,
+          auth,
+     }
 });
 
 export default store;
