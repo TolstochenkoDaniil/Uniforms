@@ -12,9 +12,10 @@ def check_form_edit_permission(form_id, edit_url):
         args=[Parameter(name='url',value=edit_url)]
     )
 
-    if response.get('response').get('result'):
-        form = apps.get_model('forms.Form').objects.filter(pk=form_id).get()
-        form.is_valid = True
-        form.save()
+    is_valid = response.get('response').get('result')
+
+    form = apps.get_model('forms.Form').objects.filter(pk=form_id).get()
+    form.is_valid = is_valid if is_valid is not None else False
+    form.save()
 
     return response.get('response')

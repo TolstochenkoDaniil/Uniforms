@@ -1,7 +1,6 @@
 from rest_framework import viewsets
 from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticated, IsAuthenticatedOrReadOnly
-from rest_framework.decorators import permission_classes
 from rest_framework_simplejwt.authentication import JWTAuthentication
 
 from .models import Form
@@ -22,7 +21,7 @@ class FormViewSet(PermissionMixin, viewsets.ModelViewSet):
         return Response(serializer.data)
 
     def list(self, request, discipline=None):
-        form = Form.objects.filter(discipline=discipline)
+        form = Form.objects.filter(discipline=discipline, is_valid=1)
         page = self.paginate_queryset(form)
         serializer = FormListSerializer(page, many=True)
 
@@ -30,7 +29,9 @@ class FormViewSet(PermissionMixin, viewsets.ModelViewSet):
 
     def create(self, request, user_id=None):
         serializer = self.get_serializer()
-        _, created = serializer.create(request.data, user_id=user_id)
+        form, created = serializer.create(request.data, user_id=user_id)
+
+        form.check_edit_permission()
 
         if created:
             return Response(data={'status': 'created'}, status=201)

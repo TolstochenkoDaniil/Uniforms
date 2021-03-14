@@ -112,7 +112,7 @@ class Form(models.Model):
     def change_status(self, status):
         self.status = status
         self.save()
-        
+
     def check_edit_permission(self):
         if self.status != FormStatus.BANNED:
             check_form_edit_permission.delay(self.id, self.edit_url)
